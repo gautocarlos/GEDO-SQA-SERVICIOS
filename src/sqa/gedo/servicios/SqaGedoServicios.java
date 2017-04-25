@@ -1,10 +1,11 @@
 package sqa.gedo.servicios;
 
-//import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import sqa.utils.ProjectCustomPropertiesMatcher;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -12,30 +13,42 @@ import java.util.ArrayList;
 import com.eviware.soapui.tools.SoapUITestCaseRunner;
 
 public class SqaGedoServicios {
-	private SoapUITestCaseRunner runner = new SoapUITestCaseRunner();
-
+	private SoapUITestCaseRunner proyectoSoapUI;
+	private ProjectCustomPropertiesMatcher projectCustomPropertiesMatcher;
 	/**
-	 * 
+	 * TODO Eliminar?
 	 */
 	String[] properties = null;
 
-	@Before
-	private void setUpSettings() {
-		runner.setSettingsFile("config/soapui-settings.xml");
+	/**
+	 * Constructor
+	 */
+	public SqaGedoServicios() {
+		proyectoSoapUI = new SoapUITestCaseRunner();
+		projectCustomPropertiesMatcher = new ProjectCustomPropertiesMatcher();
 	}
 
-	public void setUpEscenario01() throws Exception {
-		runner.setProjectFile("proyectos_soapui/0000-AUT-002-soapui-project.xml");
+	public ProjectCustomPropertiesMatcher getProjectCustomPropertiesMatcher() {
+		return projectCustomPropertiesMatcher;
+	}
+
+	public void setProjectCustomPropertiesMatcher(ProjectCustomPropertiesMatcher projectCustomPropertiesMatcher) {
+		this.projectCustomPropertiesMatcher = projectCustomPropertiesMatcher;
+	}
+
+	@Before
+	public void setUpSettings() {
+		proyectoSoapUI.setSettingsFile("configuraciones/soapui-settings.xml");
 	}
 
 	/**
-	 * * A partir de un archivo plano de properties se setean las mismas al
-	 * runner del proyecto SoapUI a ejecutar
+	 * Parser de archivo de texto plano a array de String compatible con lo que
+	 * precisa el SoapUITestCaseRunner
 	 * 
 	 * @throws Exception
 	 **/
 	public String[] parsearArchivoTextoAPropertiesProyectoSoap(String rutaArchivoProperty) throws Exception {
-        ArrayList<String> lista = new ArrayList<String>();
+		ArrayList<String> lista = new ArrayList<String>();
 		try {
 			FileReader archivo = new FileReader(rutaArchivoProperty);
 			BufferedReader buffer = new BufferedReader(archivo);
@@ -55,55 +68,36 @@ public class SqaGedoServicios {
 	}
 
 	/**
-	 * Se pasan por parámetro las varibles a considerar para el armado del
+	 * Se pasa por parámetro las varibles a considerar para el armado del
 	 * request.
 	 * 
-	 * Parámetros: acronimoTipoDocumento, data, referencia, usuario, numero
+	 * @param projectFile
+	 *            - archivo .xml del proyecto soap a ejecutar
+	 * @param customProperties
+	 *            - archivo de texto plano de custom properties creadas para la
+	 *            ejecución del proyecto
 	 */
-	public void setUpEscenario02() throws Exception {
-		runner.setProjectFile("proyectos_soapui/0000-AUT-004-soapui-project.xml");
-		runner.setProjectProperties(
-				parsearArchivoTextoAPropertiesProyectoSoap("properties/Properties_generarDocumentoGEDO.txt"));
+	public void setUpEscenario(String projectFile, String customProperties) throws Exception {
+		proyectoSoapUI.setProjectFile(projectFile);
+		proyectoSoapUI.setProjectProperties(parsearArchivoTextoAPropertiesProyectoSoap(customProperties));
 	}
 
-	@Given("^A partir de un acrónimo GEDO y un usuario con permisos de firma sobre el mismo$")
-	public void a_partir_de_un_acronimo_GEDO_y_un_usuario_con_permisos_de_firma_sobre_el_mismo() throws Exception {
-		this.setUpEscenario01();
-		/**
-		 * TODO Crear/Levantar y pasar propiedades de ejecución al proyecto
-		 * SoapUI mediante un mapa
-		 */
-	}
-
-	@When("^Realiza la invocación del servicio generarDocumento$")
-	public void realiza_la_invocacion_del_servicio_generarDocumento() throws Exception {
-		runner.run();
-	}
-
-	@Then("^Se genera un número de documento GDE$")
-	/**
-	 * Ejemplo simple implementando la clase SoapUITestCaseRunner
-	 * (com.eviware.soapui.impl.wsdl.WsdlProject.WsdlProject) para procesar y
-	 * ejecutar un proyecto SoapUI
-	 */
-	public void se_genera_un_numero_de_documento_GDE() throws Exception {
-		/**
-		 * TODO Levantar las propiedades del proyecto para obtener el número
-		 * GEDO generado
-		 */
-	}
-
-	@Given("^A partir de un acrónimo GEDO y un usuario sin permisos de firma sobre el mismo$")
+	@Given("^A partir de un acrónimo GEDO, un usuario destino y un usuario con permisos de inicio de documento sobre el mismo$")
 	public void a_partir_de_un_acronimo_GEDO_y_un_usuario_sin_permisos_de_firma_sobre_el_mismo() throws Throwable {
-		this.setUpEscenario02();
-		/**
-		 * TODO Crear/Levantar y pasar propiedades de ejecución al proyecto
-		 * SoapUI mediante un mapa
-		 */
+		// this.setUpEscenario("proyectos_soapui/0000-AUT-004-soapui-project.xml",
+		// "properties/Properties_generarDocumentoGEDO.txt");
+		String project = getProjectCustomPropertiesMatcher().getProject(0);
+		String customProperties = getProjectCustomPropertiesMatcher().getCustomProperties(0);
+		setUpEscenario(project, customProperties);
 
 	}
 
-	@Then("^No se genera un número de documento GDE$")
+	@When("^Realiza la invocación del servicio generarTarea$")
+	public void realiza_la_invocacion_del_servicio_generarTarea() throws Exception {
+		proyectoSoapUI.run();
+	}
+
+	@Then("^Se genera una tarea de confección de documento al usuario destino$")
 	public void no_se_genera_un_numero_de_documento_GDE() throws Throwable {
 		/**
 		 * TODO Levantar las propiedades del proyecto para obtener el error que
