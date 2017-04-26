@@ -1,0 +1,17 @@
+acronimoTipoDocumentoDocLibreMonoR=IF
+acronimoTipoDocumentoDocImpMonoR=IMPOR
+acronimoTipoDocumentoDocTemplateMonoR=TEMLA
+acronimoTipoDocumentoDocImpoTempMonoR=IMTE
+mensaje=Este es un mensaje.
+sistemaIniciador=SQA1
+tarea=Confeccionar Documento
+usuEmi=FBONIFAC
+usuRecep=AUTORECEPTAREAS
+referenciaDocLibreMonoR=Documento Libre
+referenciaDocImpMonoR=Documento Importado
+referenciaDocTemplateMonoR=Documento Template
+referenciaDocImpoTempMonoR=Documento Importado-Template
+processIdDocLibreMonoR=procesoGEDO.86270208
+processIdDocImpMonoR=procesoGEDO.86270151
+processIdDocTemplateMonoR=procesoGEDO.86270176
+processIdDocImpoTempMonoR=procesoGEDO.86270192

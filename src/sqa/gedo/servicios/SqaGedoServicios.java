@@ -86,8 +86,8 @@ public class SqaGedoServicios {
 	public void a_partir_de_un_acronimo_GEDO_y_un_usuario_sin_permisos_de_firma_sobre_el_mismo() throws Throwable {
 		// this.setUpEscenario("proyectos_soapui/0000-AUT-004-soapui-project.xml",
 		// "properties/Properties_generarDocumentoGEDO.txt");
-		String project = getProjectCustomPropertiesMatcher().getProject(0);
-		String customProperties = getProjectCustomPropertiesMatcher().getCustomProperties(0);
+		String project = getProjectCustomPropertiesMatcher().getProject(1);
+		String customProperties = getProjectCustomPropertiesMatcher().getCustomProperties(1);
 		setUpEscenario(project, customProperties);
 
 	}
