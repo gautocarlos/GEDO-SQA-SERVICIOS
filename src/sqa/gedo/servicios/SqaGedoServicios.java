@@ -15,17 +15,27 @@ import com.eviware.soapui.tools.SoapUITestCaseRunner;
 public class SqaGedoServicios {
 	private SoapUITestCaseRunner proyectoSoapUI;
 	private ProjectCustomPropertiesMatcher projectCustomPropertiesMatcher;
-	/**
-	 * TODO Eliminar?
-	 */
-	String[] properties = null;
 
 	/**
 	 * Constructor
 	 */
 	public SqaGedoServicios() {
-		proyectoSoapUI = new SoapUITestCaseRunner();
-		projectCustomPropertiesMatcher = new ProjectCustomPropertiesMatcher();
+		setProyectoSoapUI(new SoapUITestCaseRunner());
+		setProjectCustomPropertiesMatcher(new ProjectCustomPropertiesMatcher());
+	}
+
+	/**
+	 * @return the proyectoSoapUI
+	 */
+	public SoapUITestCaseRunner getProyectoSoapUI() {
+		return proyectoSoapUI;
+	}
+
+	/**
+	 * @param proyectoSoapUI the proyectoSoapUI to set
+	 */
+	public void setProyectoSoapUI(SoapUITestCaseRunner proyectoSoapUI) {
+		this.proyectoSoapUI = proyectoSoapUI;
 	}
 
 	public ProjectCustomPropertiesMatcher getProjectCustomPropertiesMatcher() {
@@ -44,7 +54,7 @@ public class SqaGedoServicios {
 	/**
 	 * Parser de archivo de texto plano a array de String compatible con lo que
 	 * precisa el SoapUITestCaseRunner
-	 * 
+	 * TODO Extraer en otra clase
 	 * @throws Exception
 	 **/
 	public String[] parsearArchivoTextoAPropertiesProyectoSoap(String rutaArchivoProperty) throws Exception {
@@ -84,8 +94,6 @@ public class SqaGedoServicios {
 
 	@Given("^A partir de un acrónimo GEDO, un usuario destino y un usuario con permisos de inicio de documento sobre el mismo$")
 	public void a_partir_de_un_acronimo_GEDO_y_un_usuario_sin_permisos_de_firma_sobre_el_mismo() throws Throwable {
-		// this.setUpEscenario("proyectos_soapui/0000-AUT-004-soapui-project.xml",
-		// "properties/Properties_generarDocumentoGEDO.txt");
 		String project = getProjectCustomPropertiesMatcher().getProject(1);
 		String customProperties = getProjectCustomPropertiesMatcher().getCustomProperties(1);
 		setUpEscenario(project, customProperties);
