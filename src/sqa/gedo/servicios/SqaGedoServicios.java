@@ -4,6 +4,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import sqa.utils.ConstantesServicios;
 import sqa.utils.ProjectCustomPropertiesMatcher;
 
 import java.io.BufferedReader;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 
 import com.eviware.soapui.tools.SoapUITestCaseRunner;
 
-public class SqaGedoServicios {
+public class SqaGedoServicios implements ConstantesServicios {
 	private SoapUITestCaseRunner proyectoSoapUI;
 	private ProjectCustomPropertiesMatcher projectCustomPropertiesMatcher;
 
@@ -22,6 +23,7 @@ public class SqaGedoServicios {
 	public SqaGedoServicios() {
 		setProyectoSoapUI(new SoapUITestCaseRunner());
 		setProjectCustomPropertiesMatcher(new ProjectCustomPropertiesMatcher());
+		getProyectoSoapUI().setOutputFolder(RUTALOGS);
 	}
 
 	/**
@@ -32,29 +34,40 @@ public class SqaGedoServicios {
 	}
 
 	/**
-	 * @param proyectoSoapUI the proyectoSoapUI to set
+	 * @param proyectoSoapUI
+	 *            the proyectoSoapUI to set
 	 */
 	public void setProyectoSoapUI(SoapUITestCaseRunner proyectoSoapUI) {
 		this.proyectoSoapUI = proyectoSoapUI;
 	}
 
+	/**
+	 * @return the projectCustomPropertiesMatcher
+	 */
 	public ProjectCustomPropertiesMatcher getProjectCustomPropertiesMatcher() {
 		return projectCustomPropertiesMatcher;
 	}
 
+	/**
+	 * @param projectCustomPropertiesMatcher
+	 *            the projectCustomPropertiesMatcher to set
+	 */
 	public void setProjectCustomPropertiesMatcher(ProjectCustomPropertiesMatcher projectCustomPropertiesMatcher) {
 		this.projectCustomPropertiesMatcher = projectCustomPropertiesMatcher;
 	}
 
+	/**
+	 * Setea las configuraciones básicas que precisa SoapUI
+	 */
 	@Before
 	public void setUpSettings() {
-		proyectoSoapUI.setSettingsFile("configuraciones/soapui-settings.xml");
+		getProyectoSoapUI().setSettingsFile(ARCHIVOCONFIGURACIONESSOAPUI);
 	}
 
 	/**
 	 * Parser de archivo de texto plano a array de String compatible con lo que
-	 * precisa el SoapUITestCaseRunner
-	 * TODO Extraer en otra clase
+	 * precisa el SoapUITestCaseRunner TODO Extraer en otra clase
+	 * 
 	 * @throws Exception
 	 **/
 	public String[] parsearArchivoTextoAPropertiesProyectoSoap(String rutaArchivoProperty) throws Exception {
@@ -88,29 +101,42 @@ public class SqaGedoServicios {
 	 *            ejecución del proyecto
 	 */
 	public void setUpEscenario(String projectFile, String customProperties) throws Exception {
-		proyectoSoapUI.setProjectFile(projectFile);
-		proyectoSoapUI.setProjectProperties(parsearArchivoTextoAPropertiesProyectoSoap(customProperties));
+		getProyectoSoapUI().setProjectFile(projectFile);
+		getProyectoSoapUI().setProjectProperties(parsearArchivoTextoAPropertiesProyectoSoap(customProperties));
 	}
 
 	@Given("^A partir de un acrónimo GEDO, un usuario destino y un usuario con permisos de inicio de documento sobre el mismo$")
 	public void a_partir_de_un_acronimo_GEDO_y_un_usuario_sin_permisos_de_firma_sobre_el_mismo() throws Throwable {
-		String project = getProjectCustomPropertiesMatcher().getProject(1);
-		String customProperties = getProjectCustomPropertiesMatcher().getCustomProperties(1);
+		String project = getProjectCustomPropertiesMatcher().getProject(0);
+		String customProperties = getProjectCustomPropertiesMatcher().getCustomProperties(0);
 		setUpEscenario(project, customProperties);
-
 	}
 
 	@When("^Realiza la invocación del servicio generarTarea$")
-	public void realiza_la_invocacion_del_servicio_generarTarea() throws Exception {
-		proyectoSoapUI.run();
+	public void ejecutarProyectoSoapUI() throws Exception {
+		getProyectoSoapUI().run();
 	}
 
 	@Then("^Se genera una tarea de confección de documento al usuario destino$")
-	public void no_se_genera_un_numero_de_documento_GDE() throws Throwable {
+	public void validarTareasDeConfeccionGeneradas() throws Throwable {
 		/**
 		 * TODO Levantar las propiedades del proyecto para obtener el error que
 		 * debería arrojar el servicio
 		 */
 	}
 
+	@Given("^A partir de un acrónimo GEDO, un usuario destino y un usuario con permisos de firma de documento sobre el mismo$")
+	public void a_partir_de_un_acronimo_GEDO_un_usuario_destino_y_un_usuario_con_permisos_de_firma_de_documento_sobre_el_mismo()
+			throws Throwable {
+		String project = getProjectCustomPropertiesMatcher().getProject(1);
+		String customProperties = getProjectCustomPropertiesMatcher().getCustomProperties(1);
+		setUpEscenario(project, customProperties);
+	}
+
+	@Then("^Se genera una tarea de firma de documento al usuario destino$")
+	public void validarTareasDeFirmaGeneradas() throws Throwable {
+		/**
+		 * TODO - generar lógica de validación
+		 */
+	}
 }

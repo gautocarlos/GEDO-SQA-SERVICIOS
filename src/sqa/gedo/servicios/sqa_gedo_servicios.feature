@@ -6,3 +6,8 @@ Scenario: GEDO-ENVIAR A PRODUCIR
 	When Realiza la invocación del servicio generarTarea
 	Then Se genera una tarea de confección de documento al usuario destino
 	
+Scenario: GEDO-ENVIAR A FIRMAR
+
+	Given A partir de un acrónimo GEDO, un usuario destino y un usuario con permisos de firma de documento sobre el mismo
+	When Realiza la invocación del servicio generarTarea
+	Then Se genera una tarea de firma de documento al usuario destino

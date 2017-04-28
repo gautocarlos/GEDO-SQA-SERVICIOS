@@ -1,6 +1,0 @@
-acronimoTipoDocumento=ZAUL5
-data=U1FBIC0gUHJ1ZWJhIEludGVncmFjacOzbjogQ3VjdW1iZXIgLSBKVW5pdCAtIFNvYXBVSQ==
-referencia=SQA - Prueba Integración: Cucumber - JUnit - SoapUI
-sistemaOrigen=SQA01
-usuario=DJANGO
-numero=

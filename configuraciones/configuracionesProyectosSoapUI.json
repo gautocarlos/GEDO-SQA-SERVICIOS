@@ -1,7 +1,6 @@
 {
   "proyectosSoapUI": [
-    "0000-AUT-004-soapui-project.xml:Properties_generarDocumentoGEDO.txt",
-    "GEDO--ENVIAR-A-PRODUCIR.xml:CUSTOMPROP-GEDO---ENVIAR-A-PRODUCIR.xml",
-    "proyecto3:customProperties3"
+    "GEDO--ENVIAR-A-PRODUCIR.xml:PROPERTIES-GEDO--ENVIAR-A-PRODUCIR.txt",
+    "GEDO--ENVIAR-A-FIRMAR.xml:PROPERTIES-GEDO--ENVIAR-A-FIRMAR.txt"
   ]
 }
